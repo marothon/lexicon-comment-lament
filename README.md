@@ -1,5 +1,8 @@
 # Kommentera mera
 
+## Grupp 3
+Max, Mattias, Tatiana, Veselin
+
 ## Uppgift
 * Här har ni ett litet halvfärdigt projekt som behöver byggas på, men först behöver ni sätta er in i koden. Gör detta genom att kommentera vad som händer i alla funktioner och variabler först.
 

@@ -1,19 +1,15 @@
 import { useState } from 'react';
 import './Book.css';
+import { BookInterface } from '../Interfaces/BookInterface';
 
-// Declaring a type interface to a book object
-// TODO: set the interface in own file
-interface BookInterface {
-    title: string;
-    author: string;
-    isbn: number;
-    genres?: Array<string>;
-    rating: number;
-    cover?: string;
+interface BookProps {
+    book: BookInterface;
+    updateBook: (updatedBook: BookInterface) => void;
+    deleteBook: (deletedBook: BookInterface) => void;
 }
 
 // Book component, destructures props to extract book and updateBook function and sets their type
-function Book({ book, updateBook }: { book: BookInterface, updateBook: (updatedBook: BookInterface) => void }) {
+function Book({ book, updateBook, deleteBook}: BookProps){
 
     // Declare states for book properties
     const [edit, setEdit] = useState<boolean>(false);
@@ -31,9 +27,8 @@ function Book({ book, updateBook }: { book: BookInterface, updateBook: (updatedB
     // Function to update book with new edits
     const handleEdit = () => {
 
-        // Set updatedBook object to hold new st
+        // Set updatedBook object to hold new state
         const updatedBook: BookInterface = {
-            // TODO: id is missing
             title: title,
             author: author,
             isbn: isbn,
@@ -47,6 +42,19 @@ function Book({ book, updateBook }: { book: BookInterface, updateBook: (updatedB
         // Disable the edit-mode
         setEdit(false);
     };
+
+    // Function to delete book
+    const handleDelete = () => {
+        const deletedBook: BookInterface = {
+            title: title,
+            author: author,
+            isbn: isbn,
+            genres: book.genres,
+            rating: rating,
+            cover: book.cover
+        }
+        deleteBook(deletedBook);
+    }
 
     return (
         // If edit mode is enabled, show edit fields, else show normal book html
@@ -62,7 +70,8 @@ function Book({ book, updateBook }: { book: BookInterface, updateBook: (updatedB
                     {/* Update field for rating */}
                     <input max="5" min="1" type='number' defaultValue={rating} onChange={(e) => setRating(parseInt(e.target.value))} id='newRating' />
                 </section>
-                <button onClick={handleEdit}>Confirm</button>
+                <button onClick={handleDelete}>Delete</button>
+                <button onClick={handleEdit}>Confirm</button>      
             </>
             :
             /* Show default book html, not edit mode */

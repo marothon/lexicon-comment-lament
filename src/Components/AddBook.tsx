@@ -1,36 +1,28 @@
-import { useState } from 'react';
+import { FormEventHandler, useState } from 'react';
 import './AddBook.css'
+import { BookInterface } from '../Interfaces/BookInterface';
 
-// TODO: Refactor BookInterface, set the interface in own file
-interface BookInterface {
-    title: string;
-    author: string;
-    isbn: number;
-    genres?: Array<string>;
-    rating: number;
-    cover?: string;
+interface AddBookProps {
+    addBookFunction: (bookToAdd: BookInterface) => void;
+    toggleAddView: () => void;
 }
 
 // Declare component AddBook that receives the props addBookFunction and toggleAddView 
-export default function AddBook({ addBookFunction, toggleAddView }: { addBookFunction: (bookToAdd: BookInterface) => void, toggleAddView: () => void }) {
-    const [title, setTitle] = useState<string>('');
-    const [author, setAuthor] = useState<string>('');
-    const [isbn, setIsbn] = useState<number>(0);
+export default function AddBook({ addBookFunction, toggleAddView }: AddBookProps) {
     const [genres, setGenres] = useState<string[]>([]);
     const [genreToAdd, setGenreToAdd] = useState<string>('');
-    const [rating, setRating] = useState<number>(5);
-    const [cover, setCover] = useState<string>('');
 
     // Helper function to add a book
-    const addBook = () => {
+    const addBook: FormEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault();
+        const bookData = new FormData(e.target as HTMLFormElement);
         let newBook = {
-            // TODO: id is missing
-            title: title,
-            author: author,
-            isbn: isbn,
+            title: bookData.get('title') as string,
+            author: bookData.get('author') as string,
+            isbn: parseInt(bookData.get('isbn') as string),
             genres: genres,
-            rating: rating,
-            cover: cover
+            rating: parseInt(bookData.get('rating') as string),
+            cover: bookData.get("cover") as string
         }
         addBookFunction(newBook);
     };
@@ -44,18 +36,19 @@ export default function AddBook({ addBookFunction, toggleAddView }: { addBookFun
     return (
         <article className='addBook-container'>
             <h3>ADD NEW BOOK</h3>
-            <form className='addBook-form'>
+            {/* Using an onSubmit event instead of onClick on add button */}
+            <form className='addBook-form' onSubmit={addBook}>
                 <label className='cover-field'>
                     Cover: 
-                    <input placeholder="Cover" onChange={(e) => setCover(e.target.value)} id='cover'/>
+                    <input placeholder="Cover" id='cover' name='cover'/>
                 </label>     
                 <label className='author-field'>
                     Author:
-                    <input required placeholder="Author" onChange={(e) => setAuthor(e.target.value)} id='author' />
+                    <input required placeholder="Author" id='author' name='author'/>
                 </label>
                 <label className='title-field'>
                     Title:
-                    <input required placeholder="Title" onChange={(e) => setTitle(e.target.value)} id='title'/>
+                    <input required placeholder="Title" id='title' name='title'/>
                 </label>
                 {genres.length > 0 ? <ul className='genres'>{genres.map((genre, i) => <li key={i}>{genre}</li>)}</ul> : null}
                 <section className='genre-field'>
@@ -66,14 +59,14 @@ export default function AddBook({ addBookFunction, toggleAddView }: { addBookFun
                 </section>
                 <label className='isbn-field'>
                     ISBN:
-                    <input required placeholder="00000000" onChange={(e) => setIsbn(parseInt(e.target.value))} id='isbn' />
+                    <input required placeholder="00000000" id='isbn' name='isbn'/>
                 </label>
                 <label className='rating-field'>Rating:
-                    <input required max="5" min="1" type='number' defaultValue={rating} onChange={(e) => setRating(parseInt(e.target.value))} id='rating' />
+                    <input required max="5" min="1" type='number' defaultValue={3} id='rating' name='rating'/>
                 </label>
                 <section className='buttons-field'>
                     <button className='cancel' onClick={toggleAddView}>Cancel</button>
-                    <button className='add' onClick={addBook}>Add</button>
+                    <button className='add'>Add</button>
                 </section>
             </form>
         </article>

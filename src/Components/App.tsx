@@ -4,6 +4,7 @@ import Book from './Book';
 import AddBook from './AddBook';
 import { BookInterface } from '../Interfaces/BookInterface';
 import { defaultBookList } from '../Utils/BookList';
+import Button from './Button';
 
 // Declaring component App
 function App() {
@@ -26,7 +27,7 @@ function App() {
       alert('This book is already in your list!');
       return;
     }
-    
+
     setBookList([...bookList, bookToAdd]);
   // why setting it to true makes react crash?  
     setshowAddBook(false);
@@ -43,7 +44,7 @@ function App() {
     <>
       <header>
         <h1>My book collection</h1>
-        <button className='round-add-btn' onClick={() => { setshowAddBook(true) }}>+</button>
+        <Button className='round-add-btn' handler={() => { setshowAddBook(true) }} name="+"/>
       </header>
 
       <main>

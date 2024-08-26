@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './Book.css';
 import { BookInterface } from '../Interfaces/BookInterface';
+import Button from './Button';
 
 interface BookProps {
     book: BookInterface;
@@ -70,8 +71,8 @@ function Book({ book, updateBook, deleteBook}: BookProps){
                     {/* Update field for rating */}
                     <input max="5" min="1" type='number' defaultValue={rating} onChange={(e) => setRating(parseInt(e.target.value))} id='newRating' />
                 </section>
-                <button onClick={handleDelete}>Delete</button>
-                <button onClick={handleEdit}>Confirm</button>      
+                <Button handler={handleDelete} name="Delete"/>
+                <Button handler={handleEdit} name="Confirm"/>
             </>
             :
             /* Show default book html, not edit mode */
@@ -84,7 +85,7 @@ function Book({ book, updateBook, deleteBook}: BookProps){
                     <p>Genres: {book.genres ? book.genres.join(", ") : "Not defined"}</p>
                     <p>{stars}</p>
                 </section>
-                <button onClick={() => { setEdit(true) }}>Edit</button>
+                <Button handler={()=>{setEdit(true)}} name="Edit"/>
             </>
         }
         </article>

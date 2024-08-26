@@ -1,6 +1,7 @@
 import { FormEventHandler, useState } from 'react';
 import './AddBook.css'
 import { BookInterface } from '../Interfaces/BookInterface';
+import Button from './Button';
 
 interface AddBookProps {
     addBookFunction: (bookToAdd: BookInterface) => void;
@@ -55,7 +56,7 @@ export default function AddBook({ addBookFunction, toggleAddView }: AddBookProps
                     <label>Genres:
                         <input placeholder="Genre" onChange={(e) => setGenreToAdd(e.target.value)} id='genre'/>
                     </label>
-                    <button className='add' onClick={() => setGenres([...genres, genreToAdd])}>Add</button>
+                    <Button className="add" handler={() => setGenres([...genres, genreToAdd])} name="Add"/>
                 </section>
                 <label className='isbn-field'>
                     ISBN:
@@ -65,8 +66,8 @@ export default function AddBook({ addBookFunction, toggleAddView }: AddBookProps
                     <input required max="5" min="1" type='number' defaultValue={3} id='rating' name='rating'/>
                 </label>
                 <section className='buttons-field'>
-                    <button className='cancel' onClick={toggleAddView}>Cancel</button>
-                    <button className='add'>Add</button>
+                    <Button className='cancel' handler={toggleAddView} name="Cancel"/>
+                    <Button type="submit" className='add' name="Add"/>
                 </section>
             </form>
         </article>

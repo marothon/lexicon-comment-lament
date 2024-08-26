@@ -3,18 +3,20 @@ import './App.css'
 import Book from './Components/Book';
 import AddBook from './Components/AddBook';
 
+// Declaring a type interface to a book object
 interface BookInterface {
   title: string;
   author: string;
   isbn: number;
-  genres?: Array<string>;
+  genres?: Array<string>; //Non-mandatory by using "?"
   rating: number;
-  cover?: string;
+  cover?: string; //URL to image of the book cover
 }
 
+// Declaring component App
 function App() {
-  const [showAddBook, setshowAddBook] = useState<boolean>(false);
-  const [bookList, setBookList] = useState<BookInterface[]>([
+  const [showAddBook, setshowAddBook] = useState<boolean>(false); //Setup state-hook showAddBook to false for a start
+  const [bookList, setBookList] = useState<BookInterface[]>([ //Setup state-hook bookList with a pre-defined list
     {
       title: "Ulysses",
       author: "James Joyce",
@@ -64,17 +66,22 @@ function App() {
     }
   ]);
 
+  // Helper funktion to update the list of books and its state
   function updateBookList(updatedBook: BookInterface) {
     let index = bookList.findIndex((book) => book.isbn === updatedBook.isbn);
     let updatedBookList = [...bookList];
     updatedBookList.splice(index, 1, updatedBook);
     setBookList(updatedBookList)
   };
+
+  // Helper funktion to add a new book to our list
   function addBookToBookList(bookToAdd: BookInterface) {
     setBookList([...bookList, bookToAdd]);
+  // why setting it to true makes react crash?  
     setshowAddBook(false);
   }
 
+  // Return our component in TSX syntax
   return (
     <>
       <header>
@@ -84,13 +91,15 @@ function App() {
 
       <main>
         <section className='bookList-container'>
-          {
-            bookList.map((book, i) => (
+          {/* Iterate our list of books and render each one */}
+          { 
+            bookList.map((book, i) => ( // TODO: better to use isbn rather than index for key
               <Book key={i} book={book} updateBook={updateBookList} />
             ))
           }
         </section>
       </main>
+      {/* Show add new book form if we've */}
       {showAddBook ? <AddBook addBookFunction={addBookToBookList} toggleAddView={() => { setshowAddBook(false) }} /> : null}
     </>
   )

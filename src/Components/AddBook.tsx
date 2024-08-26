@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import './AddBook.css'
+
+// TODO: Refactor BookInterface, set the interface in own file
 interface BookInterface {
     title: string;
     author: string;
@@ -8,6 +10,8 @@ interface BookInterface {
     rating: number;
     cover?: string;
 }
+
+// Declare component AddBook that receives the props addBookFunction and toggleAddView 
 export default function AddBook({ addBookFunction, toggleAddView }: { addBookFunction: (bookToAdd: BookInterface) => void, toggleAddView: () => void }) {
     const [title, setTitle] = useState<string>('');
     const [author, setAuthor] = useState<string>('');
@@ -16,8 +20,11 @@ export default function AddBook({ addBookFunction, toggleAddView }: { addBookFun
     const [genreToAdd, setGenreToAdd] = useState<string>('');
     const [rating, setRating] = useState<number>(5);
     const [cover, setCover] = useState<string>('');
+
+    // Helper function to add a book
     const addBook = () => {
         let newBook = {
+            // TODO: id is missing
             title: title,
             author: author,
             isbn: isbn,
@@ -27,14 +34,21 @@ export default function AddBook({ addBookFunction, toggleAddView }: { addBookFun
         }
         addBookFunction(newBook);
     };
+
+    // Returns the AddBook component in TSX syntax
+    // Each input has an onChange event handler to update the 
+    // field's value and keep it in the component state. We add our
+    // book by finally clicking the button "Add" which propogates the 
+    // new book to our parent component via the prop addBookFunction
+    // TODO: Refactor onChange listeners to simplify 
     return (
         <article className='addBook-container'>
             <h3>ADD NEW BOOK</h3>
             <form className='addBook-form'>
                 <label className='cover-field'>
-                    Cover:
+                    Cover: 
                     <input placeholder="Cover" onChange={(e) => setCover(e.target.value)} id='cover'/>
-                </label>
+                </label>     
                 <label className='author-field'>
                     Author:
                     <input required placeholder="Author" onChange={(e) => setAuthor(e.target.value)} id='author' />
